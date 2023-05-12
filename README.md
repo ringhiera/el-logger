@@ -104,7 +104,7 @@ the log() method to be abstract, given the rest of the class is implemented, it 
 Pattern (https://en.wikipedia.org/wiki/Template_method_pattern). In the AsyncLogHandler we see how a concrete
 implementation of the pattern should be implemented as it overrides the log method.
 
-## Improvements, and How we can make Logger more open to modifications
+## Improvements, and How we can make Logger more open to Extensions
 
 The structure of the logger is already quite open to extension as it leverages dependency injection, and it implements a
 bridge design Pattern. Therefore, it is agnostic to the handler's implementation, and it can accommodate any type of
