@@ -1,18 +1,18 @@
-# expertlead-logger
+# el-logger
 
 ## General Considerations
 
 Loggers are one of the most fundamental parts of a software project, they provide observability under normal
 circumstances and are of critical importance in case of failures as often logs are the only insight available to
-investigate unexpected software failures. For this reason they need to be simple, very very robust, and performant.
-those features com in a specific order as we do not have a vay to observe failures in the actual logging process,
-therefore we should be able to exclude it beforehand, robustness is paramount as the logger is one of the first
-component of a system that needs to be available at startup, the last to be closed and we need to be sure all logs are
-flushed even, and in particular, under conditions of abnormal progran termination. Therefore, I would warmly recommend
-adopting a proper logging framework in any case where logging is needed.
+investigate unexpected software failures. For this reason they need to be simple, very-very robust, and performant.
+Those features come in a specific order as we do not have a way to log the actual logging process. Therefore, we should
+be able to rely on it beforehand. Robustness is paramount as the logger is one of the first component of a system that
+needs to be available at startup, the last to be closed, and we need to be sure all logs are flushed even, and in
+particular, under conditions of abnormal program termination. Therefore, I would warmly recommend adopting a proper
+logging framework in any case where logging is needed.
 
-In this specific case, given the goal of the exercise is assessing programming skills more than providing working code,
-we'll relax some constraints and implement e.g. a producer consumer model.
+In this specific case, given the goal of the exercise is assessing programming skills more than providing production
+code, we'll relax some constraints and show some design patterns and implement multi-threaded producer consumer model.
 
 ## Requirements and Installation
 
@@ -93,7 +93,7 @@ AsyncLogHandler is posing the basis for this type of processing as the Queue act
 worker is activated it processes a good chunk of the logs in the queue before having to yield control. Use of multiple
 workers and the use ForkAndMerge thread pool might allow to have a variable number of workers depending on the incoming
 workload. In any case one needs ot be aware of the resources available as excessively increasing the number of workers
-might starve the system for resources needed for the main computation.  
+might starve the system for resources needed for the main computation.
 
 ## Opportunities
 
