@@ -74,18 +74,19 @@ the sync_print function. Any other process using a normal print can access the c
 
 ## Considerations on Performance
 
-The logging process per-se is quite efficient, it is mostly in-memory and with few exception persistence is generally
-offloaded to the operative system (traditional file-based logs) or simply disregarded under the assumption "something"
-will capture the stdout (https://12factor.net/logs). Therefore, performance should not be of concern, unless there are
-very specific reasons requiring to consider performance. If we abstract from the log problem, and we focus more on the
-processing of streams of data, we might have to deal with large volumes of data to be processed. The solution to
-performance issues in those cases has multiple aspects. Often it requires to be addressed at architectural level as a
-reasonable estimation of the data volume can drive the architectural pattern one might want to implement and define a
-range for the amount of infrastructure needed to stand the load. Once the volumes are reasonably defined one might want
-to consider streaming single pieces of data, streaming (micro-)batches of data and process them together, or store the
-data and stream events triggering distributed executors, which in turn fetch and process the data. The most common
-Architectural Patterns use synchronous or asynchronous message brokers and often implement Reactor or Proactor patterns
-to distribute the load on a constellation of distributed workers.
+The logging process per-se is quite efficient, the asymptotic complexity of the logger is O(n*m), whereby n is the
+number of log messages and m is the number of log handlers. Furthermore, processing is mostly in-memory and with few
+exception persistence is generally offloaded to the operative system (traditional file-based logs) or simply disregarded
+under the assumption capturing the stdout is delegated (https://12factor.net/logs). Therefore, performance should not be
+of concern, unless there are very specific reasons requiring to consider performance. If we abstract from the log
+problem, and we focus more on the processing of streams of data, we might have to deal with large volumes of data to be
+processed. The solution to performance issues in those cases has multiple aspects. Often it requires to be addressed at
+architectural level as a reasonable estimation of the data volume can drive the architectural pattern one might want to
+implement and define a range for the amount of infrastructure needed to stand the load. Once the volumes are reasonably
+defined one might want to consider streaming single pieces of data, streaming (micro-)batches of data and process them
+together, or store the data and stream events triggering distributed executors, which in turn fetch and process the
+data. The most common Architectural Patterns use synchronous or asynchronous message brokers and often implement Reactor
+or Proactor patterns to distribute the load on a constellation of distributed workers.
 
 In the case os small scale in-memory log streaming, the first thing we can do to improve performance is moving from a
 single-event processing to a batching strategy. I.e. more events are collected and processed together. The

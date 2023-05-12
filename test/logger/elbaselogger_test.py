@@ -9,22 +9,30 @@ class ElBaseLoggerTestCase(unittest.TestCase):
     def test_baselogger_log_on_high_loglevel(self):
         mock_log_handler = MagicMock()
         mock_log_handler.log_level = ElLogLevel.INFO
-        logger = ElBaseLogger([mock_log_handler])
+        logger = ElBaseLogger([mock_log_handler], ElLogLevel.DEBUG)
         logger.error("some message")
         mock_log_handler.log.assert_called()
 
     def test_baselogger_log_on_same_loglevel(self):
         mock_log_handler = MagicMock()
         mock_log_handler.log_level = ElLogLevel.INFO
-        logger = ElBaseLogger([mock_log_handler])
+        logger = ElBaseLogger([mock_log_handler], ElLogLevel.DEBUG)
         logger.info("some message")
         mock_log_handler.log.assert_called()
 
     def test_baselogger_log_on_low_loglevel(self):
         mock_log_handler = MagicMock()
         mock_log_handler.log_level = ElLogLevel.INFO
-        logger = ElBaseLogger([mock_log_handler])
+        logger = ElBaseLogger([mock_log_handler], ElLogLevel.DEBUG)
         logger.debug("some message")
         assert not mock_log_handler.log.called
 
-    # Unit tests on trivial methods are skipped for brevity. In prod code we might want to have them implemented
+
+    def test_baselogger_log_on_min_log_level(self):
+        mock_log_handler = MagicMock()
+        mock_log_handler.log_level = ElLogLevel.INFO
+        logger = ElBaseLogger([mock_log_handler], ElLogLevel.ERROR)
+        logger.warn("some message")
+        assert not mock_log_handler.log.called
+
+# Unit tests on trivial methods are skipped for brevity. In prod code we might want to have them implemented

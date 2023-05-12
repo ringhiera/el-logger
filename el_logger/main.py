@@ -42,7 +42,7 @@ def main():
             email_log_handler,
             file_log_handler,
             async_log_handler
-        ])
+        ], ElLogLevel.DEBUG)
 
         # logging with different log-level
         # the first calls with no delay shows the async logger is likely to add some lag before printing the logs
