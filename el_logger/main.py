@@ -23,8 +23,8 @@ def main():
 
     # Given the logger is also expected to live for the full execution,
     # we can instantiate them in main and expect the runtime context to close them down on exit via the context protocol
-    # HOwever, termination of the main context may shut down the async processes and release resources
-    # before all logs are processed
+    # However, abrupt termination of the main context may shut down the async processes and release resources
+    # before all logs are flushed
     # e.g. relying on the execution context to terminate the processes
     # console_log_handler = ConsoleLogHandler(ElLogLevel.ERROR)
     # email_log_handler = EmailLogHandler(ElLogLevel.WARN)
@@ -45,7 +45,7 @@ def main():
         ])
 
         # logging with different log-level
-        # the first calls with no delay shows the async logger is likely to add some delay
+        # the first calls with no delay shows the async logger is likely to add some lag before printing the logs
         # the added delay allows for the logs to be generated with some time difference in the timestamp
         logger.error("Error message 1")
         logger.error("Error message 2")

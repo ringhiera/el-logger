@@ -1,5 +1,5 @@
-from el_logger.logger.elloglevel import ElLogLevel
 from el_logger.log_handler.log_handler import LogHandler
+from el_logger.logger.elloglevel import ElLogLevel
 
 
 class FileLogHandler(LogHandler):

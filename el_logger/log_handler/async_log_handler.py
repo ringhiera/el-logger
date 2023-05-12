@@ -22,8 +22,6 @@ class AsyncLogHandler(LogHandler):
         self.thread.start()
 
     def __enter__(self):
-        # start the worker when context init
-        # self.thread.start()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -31,9 +29,12 @@ class AsyncLogHandler(LogHandler):
         self.close()
 
     def start_thread(self):
-        # THis worker listen to the queue for new logs and prints them until the termination event is set
+        # This worker listen to the queue for new logs and prints them until the termination event is set
         while True:
+            # get() is synchronized, thread waits on the queue to produce.
             message = self._log_q.get()
+            # If the print can fail we might want to protect the execution and ensure task_done is called.
+            # In this specific case it is not needed as print does not raise.
             sync_print("Logger: " + self.__class__.__name__ + " - " + str(message))
             self._log_q.task_done()
 

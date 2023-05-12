@@ -16,6 +16,7 @@ class ElBaseLogger(ElLogger):
         log_message = ElLogMessage(datetime.datetime.now(), log_level, message)
         # Dispatch the log to the handlers
         for handler in self._log_handlers:
+            # validation of loglevel might be further delegated to the implementation
             if handler.log_level.value <= log_level.value:
                 handler.log(log_message)
 

@@ -1,12 +1,15 @@
 from abc import ABC
 
-from el_logger.utils.thread_safe_print import sync_print
 from el_logger.logger.elloglevel import ElLogLevel
+from el_logger.utils.thread_safe_print import sync_print
 
 
 class LogHandler(ABC):
     log_level = ElLogLevel.INFO
 
+    # Every implementation should provide a specific implementation
+    # Therefore, this method should be abstract
+    # Given most implementations are mock we provide a default mock-log implementation
     def log(self, message):
         sync_print("Logger: " + self.__class__.__name__ + " - " + str(message))
 
