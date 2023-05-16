@@ -3,5 +3,8 @@ from el_logger.logger.elloglevel import ElLogLevel
 
 
 class EmailLogHandler(LogHandler):
+    """
+    A mock Email Log Handler.
+    """
     def __init__(self, log_level: ElLogLevel):
         self.log_level = log_level

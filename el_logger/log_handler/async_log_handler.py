@@ -8,7 +8,7 @@ from el_logger.utils.thread_safe_print import sync_print
 
 class AsyncLogHandler(LogHandler):
     """
-    this class implement an asyncronous producer consumer log handler.
+    this class implement an asynchronous producer consumer log handler.
     Given logs are critical to the debug of an application one should take care they are persisted immediately.
     However, under some circumstances one might want to distribute the load to asynchronous threads to dispatch the logs
     """
@@ -29,6 +29,10 @@ class AsyncLogHandler(LogHandler):
         self.close()
 
     def start_thread(self):
+        """
+            Here we implement the body of an asynchronous worker thread. The thread hangs on a blocking queue,
+            consumes log messages from the queue, and prints them until the queue is terminated.
+        """
         # This worker listen to the queue for new logs and prints them until the termination event is set
         while True:
             # get() is synchronized, thread waits on the queue to produce.
@@ -39,9 +43,15 @@ class AsyncLogHandler(LogHandler):
             self._log_q.task_done()
 
     def close(self):
-        # wait for the queue to join
+        """
+        The close method waits for the queue to join (i.e. all messages are consumed) and terminates
+        """
         self._log_q.join()
 
     def log(self, message):
-        # The message is put in the queue for the worker threads to handle
+        """
+        The asyncronous logger posts the log message on a queue for the worker threads to consume the message
+        and do the actual logging.
+        :param message: The log message
+        """
         self._log_q.put(message)
